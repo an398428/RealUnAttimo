@@ -10,8 +10,9 @@ public class SocketPuzzleManager : MonoBehaviour
     [SerializeField] private XRSocketInteractor crystalSocket;
     [SerializeField] private XRSocketInteractor flowerSocket;
 
-    [Header("Wall to Disable")]
+    [Header("Objects to Disable on Win")]
     [SerializeField] private GameObject wall;
+    [SerializeField] private GameObject planeToDisable; // Drag "Plane (1)" here
 
     [Header("Optional Effects")]
     [SerializeField] private ParticleSystem successParticles;
@@ -111,17 +112,23 @@ public class SocketPuzzleManager : MonoBehaviour
 
     private void DisableWall()
     {
+        // Play effects if assigned
+        if (successParticles != null)
+            successParticles.Play();
+
+        if (successSound != null)
+            successSound.Play();
+
+        // 1. Disable the wall
         if (wall != null)
         {
-            // Play effects if assigned
-            if (successParticles != null)
-                successParticles.Play();
-
-            if (successSound != null)
-                successSound.Play();
-
-            // Disable the wall
             wall.SetActive(false);
+        }
+
+        // 2. Disable the extra plane (Plane 1)
+        if (planeToDisable != null)
+        {
+            planeToDisable.SetActive(false);
         }
     }
 }
