@@ -12,10 +12,11 @@ public class SocketPuzzleManager : MonoBehaviour
 
     [Header("Objects to Disable on Win")]
     [SerializeField] private GameObject wall;
-    [SerializeField] private GameObject planeToDisable; // Drag "Plane (1)" here
+    [SerializeField] private GameObject planeToDisable;
 
     [Header("Objects to Enable on Win")]
-    [SerializeField] private GameObject teleportAreaToEnable; // <--- NEW: Drag your Teleport Area here
+    [SerializeField] private GameObject teleportAreaToEnable;
+    [SerializeField] private GameObject wizardCharacter; // <--- NEW: Drag your Wizard here
 
     [Header("Optional Effects")]
     [SerializeField] private ParticleSystem successParticles;
@@ -48,16 +49,21 @@ public class SocketPuzzleManager : MonoBehaviour
             flowerSocket.selectExited.AddListener(OnFlowerRemoved);
         }
         
-        // SAFETY CHECK: Ensure the teleport area is hidden at the start
+        // SAFETY CHECK: Ensure objects intended to appear later are hidden at start
         if (teleportAreaToEnable != null)
         {
             teleportAreaToEnable.SetActive(false);
+        }
+
+        if (wizardCharacter != null) // <--- NEW: Ensure Wizard is hidden at start
+        {
+            wizardCharacter.SetActive(false);
         }
     }
 
     private void OnDestroy()
     {
-        // Unsubscribe from events to prevent memory leaks
+        // Unsubscribe from events
         if (mushroomSocket != null)
         {
             mushroomSocket.selectEntered.RemoveListener(OnMushroomPlaced);
@@ -134,16 +140,22 @@ public class SocketPuzzleManager : MonoBehaviour
             wall.SetActive(false);
         }
 
-        // 2. Disable the extra plane (Plane 1)
+        // 2. Disable the extra plane
         if (planeToDisable != null)
         {
             planeToDisable.SetActive(false);
         }
 
-        // 3. Enable the new Teleport Area
-        if (teleportAreaToEnable != null) // <--- NEW LOGIC
+        // 3. Enable the Teleport Area
+        if (teleportAreaToEnable != null)
         {
             teleportAreaToEnable.SetActive(true);
+        }
+
+        // 4. Enable the Wizard
+        if (wizardCharacter != null) // <--- NEW: Activate the Wizard
+        {
+            wizardCharacter.SetActive(true);
         }
     }
 }
