@@ -14,6 +14,9 @@ public class SocketPuzzleManager : MonoBehaviour
     [SerializeField] private GameObject wall;
     [SerializeField] private GameObject planeToDisable; // Drag "Plane (1)" here
 
+    [Header("Objects to Enable on Win")]
+    [SerializeField] private GameObject teleportAreaToEnable; // <--- NEW: Drag your Teleport Area here
+
     [Header("Optional Effects")]
     [SerializeField] private ParticleSystem successParticles;
     [SerializeField] private AudioSource successSound;
@@ -43,6 +46,12 @@ public class SocketPuzzleManager : MonoBehaviour
         {
             flowerSocket.selectEntered.AddListener(OnFlowerPlaced);
             flowerSocket.selectExited.AddListener(OnFlowerRemoved);
+        }
+        
+        // SAFETY CHECK: Ensure the teleport area is hidden at the start
+        if (teleportAreaToEnable != null)
+        {
+            teleportAreaToEnable.SetActive(false);
         }
     }
 
@@ -129,6 +138,12 @@ public class SocketPuzzleManager : MonoBehaviour
         if (planeToDisable != null)
         {
             planeToDisable.SetActive(false);
+        }
+
+        // 3. Enable the new Teleport Area
+        if (teleportAreaToEnable != null) // <--- NEW LOGIC
+        {
+            teleportAreaToEnable.SetActive(true);
         }
     }
 }
